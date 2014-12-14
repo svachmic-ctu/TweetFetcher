@@ -11,7 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 /**
- * Servlet implementation class TweetFetcher
+ * Servlet implementation class TweetFetcher.
+ *
+ * @author      Jan Neuzil     <jneuzil@isep.fr>
+ * @author      Michal Svacha  <msvacha@isep.fr>
+ * @version     0.1
+ * @since       2014-11-17
  */
 public class TweetFetcher extends HttpServlet {
 
@@ -34,10 +39,10 @@ public class TweetFetcher extends HttpServlet {
 		
 		Logic logic = new Logic(request);
 		
-		String list = logic.listDatabase();
-		
+		String result = logic.parseParameters();
+
 		PrintWriter pw = response.getWriter();
-		pw.println(list);
+		pw.println(result);
 	}
 
 	/**
