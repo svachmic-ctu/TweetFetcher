@@ -15,7 +15,7 @@
 		</taskdef>
 		<openjpac>
 			<classpath refid="enhance.cp" />
-			<config propertiesFile="${basedir}/WebContent/META-INF/persistence.xml" />
+			<config propertiesFile="${basedir}/src/META-INF/persistence.xml" />
 		</openjpac>
 	</target>
 </project>

@@ -1,4 +1,4 @@
-package com.tweetfetcher;
+package com.tweetfetcher.server;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -23,15 +23,15 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
 	private int id;
 
-	@Column(name = "username", length = 15, nullable = false)
-	private String username;
+	@Column(name = "user_name", length = 15, nullable = false)
+	private String name;
 
-	@Column(name = "nickname", length = 15, nullable = false)
-	private String nickname;
+	@Column(name = "screen_name", length = 15, nullable = false)
+	private String nick;
 
 	@Column(name = "joined_date")
 	private Timestamp date;
@@ -40,10 +40,10 @@ public class User implements Serializable {
 		// Default constructor.
 	}
 
-	public User(String username, String nickname, Timestamp joinedDate) {
-		this.username = username;
-		this.nickname = nickname;
-		this.date = joinedDate;
+	public User(String name, String nick, Timestamp date) {
+		this.name = name;
+		this.nick = nick;
+		this.date = date;
 	}
 
 	public int getId() {
@@ -51,11 +51,11 @@ public class User implements Serializable {
 	}
 
 	public String getName() {
-		return username;
+		return name;
 	}
 
 	public String getNick() {
-		return nickname;
+		return nick;
 	}
 
 	public Timestamp getDate() {

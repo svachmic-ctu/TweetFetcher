@@ -1,5 +1,6 @@
-package com.tweetfetcher;
+package com.tweetfetcher.server;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ public class Logic {
 	public static final String LIST_ALL = "listall";
 	public static final String UPDATE_DATA = "updatedata";
 
-	static Logger log = Logger.getLogger(TweetFetcher.class);
+	static Logger log = Logger.getLogger(FetcherServer.class);
 	private HttpServletRequest request;
 	
 	public Logic(HttpServletRequest request) {
@@ -48,9 +49,7 @@ public class Logic {
 				return null;
 			}
 			log.info("Listing all tweets from the given user.");
-			User user = DBHelper.findUser(Integer.valueOf(id));
-			List<Tweet> tweets = DBHelper.listTweets(user);
-			return getTweets(user, tweets);
+			return getTweets(DBHelper.listTweets(Integer.valueOf(id)));
 		}
 
 		else if (action.equals(LIST_ALL)) {
@@ -70,25 +69,34 @@ public class Logic {
 	public String getUsers(List<User> users) {
 		StringBuffer result = new StringBuffer();
 
-		for (User u : users) {
-			result.append("#" + u.getId());
-			result.append(" " + u.getNick());
-			result.append(" (" + u.getName());
-			result.append(", " + u.getDate() + ")\n");
+		if (!users.isEmpty()) {
+			for (User u : users) {
+				result.append("#" + u.getId());
+				result.append(" " + u.getNick());
+				result.append(" (" + u.getName());
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(u.getDate());
+				result.append(", " + date + ")\n");
+			}
+		} else {
+			log.warn("No users found in the database.");
 		}
 		
 		return result.toString();
 	}
 	
-	public String getTweets(User user, List<Tweet> tweets) {
+	public String getTweets(List<Tweet> tweets) {
 		StringBuffer result = new StringBuffer();
 
-		result.append("User " + user.getName() + " says:\n");
-		for (Tweet t : tweets) {
-			result.append("#" + t.getId());
-			result.append(" " + user.getNick());
-			result.append(" - " + t.getTweet());
-			result.append("(" + t.getDate() + ")\n");
+		if (!tweets.isEmpty()) {
+			result.append("User " + tweets.get(0).getUser().getNick() + " says:\n");
+			for (Tweet t : tweets) {
+				result.append("#" + t.getId());
+				result.append(" - " + t.getTweet());
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(t.getDate());
+				result.append("(" + date + ")\n");
+			}
+		} else {
+			log.warn("No tweets found from given user.");
 		}
 		
 		return result.toString();
@@ -97,11 +105,16 @@ public class Logic {
 	public String getAll(List<Tweet> tweets) {
 		StringBuffer result = new StringBuffer();
 
-		for (Tweet t : tweets) {
-			result.append("#" + t.getId());
-			result.append(" " + t.getUser().getNick());
-			result.append(" - " + t.getTweet());
-			result.append(" (" + t.getDate() + ")\n");
+		if (!tweets.isEmpty()) {
+			for (Tweet t : tweets) {
+				result.append("#" + t.getId());
+				result.append(" " + t.getUser().getNick());
+				result.append(" - " + t.getTweet());
+				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(t.getDate());
+				result.append(" (" + date + ")\n");
+			}
+		} else {
+			log.warn("No tweets found in the database.");
 		}
 		
 		return result.toString();

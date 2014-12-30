@@ -1,4 +1,4 @@
-package com.tweetfetcher;
+package com.tweetfetcher.client;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/res")
-public class RESTResource {
+public class FetcherResource {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String testText() {

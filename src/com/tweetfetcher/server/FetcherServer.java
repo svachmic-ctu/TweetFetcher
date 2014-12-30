@@ -1,4 +1,4 @@
-package com.tweetfetcher;
+package com.tweetfetcher.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,15 +18,15 @@ import org.apache.log4j.Logger;
  * @version     0.1
  * @since       2014-11-17
  */
-public class TweetFetcher extends HttpServlet {
+public class FetcherServer extends HttpServlet {
 
-	static Logger log = Logger.getLogger(TweetFetcher.class);
+	static Logger log = Logger.getLogger(FetcherServer.class);
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public TweetFetcher() {
+    public FetcherServer() {
         super();
         log.info("TweetFetcher servlet is running.");
         // TODO Auto-generated constructor stub
