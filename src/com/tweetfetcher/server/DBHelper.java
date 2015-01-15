@@ -167,7 +167,7 @@ public class DBHelper {
 		return result;
 	}
 	
-	static void updateData() {
+	static int updateData() {
 		int cnt = 0;
 		User user;
 		Tweet tweet;
@@ -217,5 +217,6 @@ public class DBHelper {
 		}
 
 		log.info(cnt + " new tweets added into the database");
+		return cnt;
 	}
 }

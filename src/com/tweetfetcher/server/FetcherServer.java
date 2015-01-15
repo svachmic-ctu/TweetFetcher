@@ -37,8 +37,6 @@ public class FetcherServer {
 	@Path("/user")
 	public List<User> fetchUser(@QueryParam("action") String action) {
 
-		Logic logic = new Logic();
-
 		if (action == null) {
 			log.error("No action specified.");
 			return null;
@@ -46,8 +44,13 @@ public class FetcherServer {
 
 		else if (action.equals(LIST_USERS)) {
 			log.info("Listing all users from the database.");
-			List<User> result = logic.getUsers();
-			return result;
+			List<User> result = DBHelper.listUsers();
+			if (!result.isEmpty()) {
+				return result;
+			} else {
+				log.warn("No users found in the database.");
+				return null;
+			}
 		}
 
 		log.error("Unrecongnized command.");
@@ -58,8 +61,6 @@ public class FetcherServer {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/tweet")
 	public List<Tweet> fetchTweet(@QueryParam("action") String action, @QueryParam("userid") String id) {
-
-		Logic logic = new Logic();
 
 		if (action == null) {
 			log.error("No action specified.");
@@ -72,35 +73,48 @@ public class FetcherServer {
 				return null;
 			}
 			log.info("Listing all tweets from the given user.");
-			List<Tweet> result = logic.getTweets(Integer.valueOf(id));
-			return result;
+			List<Tweet> result = DBHelper.listTweets(Integer.valueOf(id));
+			if (!result.isEmpty()) {
+				return result;
+			} else {
+				log.warn("No users found in the database.");
+				return null;
+			}
 		}
 
 		else if (action.equals(LIST_ALL)) {
 			log.info("Listing all tweets from the database.");
-			List<Tweet> result = logic.getAll();
-			return result;
+			List<Tweet> result = DBHelper.listAll();
+			if (!result.isEmpty()) {
+				return result;
+			} else {
+				log.warn("No users found in the database.");
+				return null;
+			}
 		}
 
 		log.error("Unrecongnized command.");
 		return null;
 	}
 
-	/*@Path("/data")
-	public void fetchData(@QueryParam("action") String action) {
-
-		Logic logic = new Logic();
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/data")
+	public String fetchData(@QueryParam("action") String action) {
 
 		if (action == null) {
 			log.error("No action specified.");
-			return;
+			return null;
 		}
 
 		else if (action.equals(UPDATE_DATA)) {
 			log.info("Updating the database with new tweets.");
-			logic.updateAll();
+			int cnt = DBHelper.updateData();
+			String result = "{\"cnt\":" + cnt + "}";
+			return result;
 		}
 
 		log.error("Unrecongnized command.");
-	}*/
+		return null;
+	}
 }
