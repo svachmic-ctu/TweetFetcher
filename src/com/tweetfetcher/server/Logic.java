@@ -3,8 +3,6 @@ package com.tweetfetcher.server;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -13,60 +11,16 @@ import org.apache.log4j.Logger;
  * @version     0.1
  * @since       2014-11-17
  */
-public class Logic {
-
-	public static final String ACTION = "action";
-	public static final String USER_ID = "userid";
-	public static final String LIST_USERS = "listusers";
-	public static final String LIST_TWEETS = "listtweets";
-	public static final String LIST_ALL = "listall";
-	public static final String UPDATE_DATA = "updatedata";
+public class Logic implements JSONEncodable {
 
 	static Logger log = Logger.getLogger(FetcherServer.class);
-	private HttpServletRequest request;
-	
-	public Logic(HttpServletRequest request) {
-		this.request = request;
-	};
 
-	public String parseParameters() {
-		String action = request.getParameter(ACTION);
-		String id = request.getParameter(USER_ID);
-
-		if (action == null) {
-			log.error("No action specified.");
-			return null;
-		}
-
-		else if (action.equals(LIST_USERS)) {
-			log.info("Listing all users from the database.");
-			return getUsers(DBHelper.listUsers());
-		}
-
-		else if (action.equals(LIST_TWEETS)) {
-			if (id == null) {
-				log.error("No user ID specified.");
-				return null;
-			}
-			log.info("Listing all tweets from the given user.");
-			return getTweets(DBHelper.listTweets(Integer.valueOf(id)));
-		}
-
-		else if (action.equals(LIST_ALL)) {
-			log.info("Listing all tweets from the database.");
-			return getAll(DBHelper.listAll());
-		}
-
-		else if (action.equals(UPDATE_DATA)) {
-			log.info("Updating the database with new tweets.");
-			DBHelper.updateData();
-			return null;
-		}
-
-		return null;
+	public Logic() {
+		
 	}
-	
-	public String getUsers(List<User> users) {
+
+	public String getUsers() {
+		List<User> users = DBHelper.listUsers();
 		StringBuffer result = new StringBuffer();
 
 		if (!users.isEmpty()) {
@@ -84,7 +38,8 @@ public class Logic {
 		return result.toString();
 	}
 	
-	public String getTweets(List<Tweet> tweets) {
+	public String getTweets(int id) {
+		List<Tweet> tweets = DBHelper.listTweets(Integer.valueOf(id));
 		StringBuffer result = new StringBuffer();
 
 		if (!tweets.isEmpty()) {
@@ -102,7 +57,8 @@ public class Logic {
 		return result.toString();
 	}
 	
-	public String getAll(List<Tweet> tweets) {
+	public String getAll() {
+		List<Tweet> tweets = DBHelper.listAll();
 		StringBuffer result = new StringBuffer();
 
 		if (!tweets.isEmpty()) {
@@ -119,4 +75,15 @@ public class Logic {
 		
 		return result.toString();
 	}
+
+	public void updateAll() {
+		DBHelper.updateData();
+	}
+
+	@Override
+	public String jsonEncode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

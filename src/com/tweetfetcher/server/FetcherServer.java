@@ -22,6 +22,12 @@ public class FetcherServer extends HttpServlet {
 
 	static Logger log = Logger.getLogger(FetcherServer.class);
 	private static final long serialVersionUID = 1L;
+	public static final String ACTION = "action";
+	public static final String USER_ID = "userid";
+	public static final String LIST_USERS = "listusers";
+	public static final String LIST_TWEETS = "listtweets";
+	public static final String LIST_ALL = "listall";
+	public static final String UPDATE_DATA = "updatedata";
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -36,13 +42,49 @@ public class FetcherServer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		Logic logic = new Logic(request);
-		
-		String result = logic.parseParameters();
 
+		String action = request.getParameter(ACTION);
+		String id = request.getParameter(USER_ID);
 		PrintWriter pw = response.getWriter();
-		pw.println(result);
+		Logic logic = new Logic();
+
+		if (action == null) {
+			log.error("No action specified.");
+			pw.println("Error: No action specified.");
+		}
+
+		else if (action.equals(LIST_USERS)) {
+			log.info("Listing all users from the database.");
+			String result = logic.getUsers();
+			pw.println(result);
+		}
+
+		else if (action.equals(LIST_TWEETS)) {
+			if (id == null) {
+				log.error("No user ID specified.");
+				pw.println("Error: No user ID specified.");
+			}
+			log.info("Listing all tweets from the given user.");
+			String result = logic.getTweets(Integer.valueOf(id));
+			pw.println(result);
+		}
+
+		else if (action.equals(LIST_ALL)) {
+			log.info("Listing all tweets from the database.");
+			String result = logic.getAll();
+			pw.println(result);
+		}
+
+		else if (action.equals(UPDATE_DATA)) {
+			log.info("Updating the database with new tweets.");
+			logic.updateAll();
+			pw.println("Info: Updating the database with new tweets.");
+		}
+		
+		else {
+			log.error("Unrecongnized command.");
+			pw.println("Error: Unrecongnized command.");
+		}
 	}
 
 	/**
