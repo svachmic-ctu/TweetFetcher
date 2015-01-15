@@ -9,9 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author      Jan Neuzil     <jneuzil@isep.fr>
@@ -19,23 +18,29 @@ import org.json.JSONObject;
  * @version     0.1
  * @since       2014-11-17
  */
+
+@XmlRootElement
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@XmlElement
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
 	private int id;
 
+	@XmlElement
 	@Column(name = "user_name", length = 15, nullable = false)
 	private String name;
 
+	@XmlElement
 	@Column(name = "screen_name", length = 15, nullable = false)
 	private String nick;
 
+	@XmlElement
 	@Column(name = "joined_date")
 	private Timestamp date;
 
@@ -63,21 +68,5 @@ public class User implements Serializable {
 
 	public Timestamp getDate() {
 		return date;
-	}
-
-	public JSONObject getJSON() {
-		JSONObject json = new JSONObject();
-		try {
-			json.put("id", id);
-			json.put("name", name);
-			json.put("nick", nick);
-			json.put("date", date);
-		}
-
-		catch (JSONException e) {
-			return null;
-		}
-
-		return json;
 	}
 }

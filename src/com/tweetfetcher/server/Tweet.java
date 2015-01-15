@@ -13,9 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author      Jan Neuzil     <jneuzil@isep.fr>
@@ -23,24 +22,30 @@ import org.json.JSONObject;
  * @version     0.1
  * @since       2014-11-17
  */
+
+@XmlRootElement
 @Entity
 @Table(name = "tweets")
-public class Tweet implements Serializable, JSONEncodable {
+public class Tweet implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@XmlElement
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tweet_id")
 	private int id;
 
+	@XmlElement
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", referencedColumnName="user_id")
 	private User user;
 
+	@XmlElement
 	@Column(name = "tweet", length = 140, nullable = false)
 	private String tweet;
 
+	@XmlElement
 	@Column(name = "date")
 	private Timestamp date;
 
@@ -68,21 +73,5 @@ public class Tweet implements Serializable, JSONEncodable {
 
 	public Timestamp getDate() {
 		return date;
-	}
-
-	public JSONObject getJSON() {
-		JSONObject json = new JSONObject();
-		try {
-			json.put("id", id);
-			json.put("user", user.getNick());
-			json.put("tweet", tweet);
-			json.put("date", date);
-		}
-
-		catch (JSONException e) {
-			return null;
-		}
-
-		return json;
 	}
 }

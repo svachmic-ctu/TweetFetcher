@@ -1,15 +1,14 @@
 package com.tweetfetcher.server;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
 
 /**
  * Servlet implementation class TweetFetcher.
@@ -19,80 +18,89 @@ import org.json.JSONArray;
  * @version     0.1
  * @since       2014-11-17
  */
-public class FetcherServer extends HttpServlet {
+
+@Path("/get")
+public class FetcherServer {
 
 	static Logger log = Logger.getLogger(FetcherServer.class);
-	private static final long serialVersionUID = 1L;
-	public static final String ACTION = "action";
-	public static final String USER_ID = "userid";
 	public static final String LIST_USERS = "listusers";
 	public static final String LIST_TWEETS = "listtweets";
 	public static final String LIST_ALL = "listall";
 	public static final String UPDATE_DATA = "updatedata";
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public FetcherServer() {
-        super();
         log.info("TweetFetcher servlet is running.");
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/user")
+	public List<User> fetchUser(@QueryParam("action") String action) {
 
-		String action = request.getParameter(ACTION);
-		String id = request.getParameter(USER_ID);
-		PrintWriter pw = response.getWriter();
 		Logic logic = new Logic();
 
 		if (action == null) {
 			log.error("No action specified.");
-			pw.println("Error: No action specified.");
+			return null;
 		}
 
 		else if (action.equals(LIST_USERS)) {
 			log.info("Listing all users from the database.");
-			JSONArray result = logic.getUsers();
-			pw.println(result.toString());
+			List<User> result = logic.getUsers();
+			return result;
+		}
+
+		log.error("Unrecongnized command.");
+		return null;
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/tweet")
+	public List<Tweet> fetchTweet(@QueryParam("action") String action, @QueryParam("userid") String id) {
+
+		Logic logic = new Logic();
+
+		if (action == null) {
+			log.error("No action specified.");
+			return null;
 		}
 
 		else if (action.equals(LIST_TWEETS)) {
 			if (id == null) {
 				log.error("No user ID specified.");
-				pw.println("Error: No user ID specified.");
+				return null;
 			}
 			log.info("Listing all tweets from the given user.");
-			JSONArray result = logic.getTweets(Integer.valueOf(id));
-			pw.println(result.toString());
+			List<Tweet> result = logic.getTweets(Integer.valueOf(id));
+			return result;
 		}
 
 		else if (action.equals(LIST_ALL)) {
 			log.info("Listing all tweets from the database.");
-			JSONArray result = logic.getAll();
-			pw.println(result.toString());
+			List<Tweet> result = logic.getAll();
+			return result;
+		}
+
+		log.error("Unrecongnized command.");
+		return null;
+	}
+
+	/*@Path("/data")
+	public void fetchData(@QueryParam("action") String action) {
+
+		Logic logic = new Logic();
+
+		if (action == null) {
+			log.error("No action specified.");
+			return;
 		}
 
 		else if (action.equals(UPDATE_DATA)) {
 			log.info("Updating the database with new tweets.");
 			logic.updateAll();
-			pw.println("Info: Updating the database with new tweets.");
 		}
-		
-		else {
-			log.error("Unrecongnized command.");
-			pw.println("Error: Unrecongnized command.");
-		}
-	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
+		log.error("Unrecongnized command.");
+	}*/
 }

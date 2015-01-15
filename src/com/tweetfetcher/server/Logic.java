@@ -1,9 +1,9 @@
 package com.tweetfetcher.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
 
 /**
  * @author      Jan Neuzil     <jneuzil@isep.fr>
@@ -19,13 +19,13 @@ public class Logic {
 		
 	}
 
-	public JSONArray getUsers() {
+	public List<User> getUsers() {
+		ArrayList<User> result = new ArrayList<User>();
 		List<User> users = DBHelper.listUsers();
-		JSONArray result = new JSONArray();
 
 		if (!users.isEmpty()) {
 			for (User u : users) {
-				result.put(u.getJSON());
+				result.add(u);
 			}
 		} else {
 			log.warn("No users found in the database.");
@@ -35,13 +35,13 @@ public class Logic {
 		return result;
 	}
 	
-	public JSONArray getTweets(int id) {
+	public List<Tweet> getTweets(int id) {
+		ArrayList<Tweet> result = new ArrayList<Tweet>();
 		List<Tweet> tweets = DBHelper.listTweets(Integer.valueOf(id));
-		JSONArray result = new JSONArray();
 
 		if (!tweets.isEmpty()) {
 			for (Tweet t : tweets) {
-				result.put(t.getJSON());
+				result.add(t);
 			}
 		} else {
 			log.warn("No tweets found from given user.");
@@ -50,13 +50,13 @@ public class Logic {
 		return result;
 	}
 	
-	public JSONArray getAll() {
+	public List<Tweet> getAll() {
+		ArrayList<Tweet> result = new ArrayList<Tweet>();
 		List<Tweet> tweets = DBHelper.listAll();
-		JSONArray result = new JSONArray();
 
 		if (!tweets.isEmpty()) {
 			for (Tweet t : tweets) {
-				result.put(t.getJSON());
+				result.add(t);
 			}
 		} else {
 			log.warn("No tweets found in the database.");
@@ -69,9 +69,3 @@ public class Logic {
 		DBHelper.updateData();
 	}
 }
-
-/*
- * import java.text.SimpleDateFormat;
- * public static final String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
- * String date = new SimpleDateFormat(TIME_FORMAT).format(t.getDate());
- */

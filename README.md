@@ -73,6 +73,14 @@ INSERT INTO tweets(user_id, tweet, date) VALUES(2, "I got a job in Ubisoft.", "2
 INSERT INTO tweets(user_id, tweet, date) VALUES(2, "I love London.", "2014-11-06 22:22:22");
 ```
 
+Commands
+========
+
+http://localhost:8080/TweetFetcher/api/get/user?action=listusers
+http://localhost:8080/TweetFetcher/api/get/tweet?action=listtweets&userid=1
+http://localhost:8080/TweetFetcher/api/get/tweet?action=listall
+http://localhost:8080/TweetFetcher/api/get/data?action=updatedata
+
 Notes
 =====
 

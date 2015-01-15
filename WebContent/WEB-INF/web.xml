@@ -10,28 +10,18 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
-    <description>A server servlet providing a simple database of posted tweets on the Twitter.</description>
+    <description>A server servlet providing a simple database of posted tweets on the Twitter and return them as JSON objects.</description>
     <display-name>FetcherServer</display-name>
     <servlet-name>FetcherServer</servlet-name>
-    <servlet-class>com.tweetfetcher.server.FetcherServer</servlet-class>
-  </servlet>
-<servlet>
-    <description>A server servlet providing a simple client to retrieve posted tweets from the database.</description>
-    <display-name>FetcherClient</display-name>
-    <servlet-name>FetcherClient</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>jersey.config.server.provider.packages</param-name>
-      <param-value>com.tweetfetcher.client</param-value>
+      <param-value>com.tweetfetcher.server</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>FetcherServer</servlet-name>
-    <url-pattern>/server</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>FetcherClient</servlet-name>
-    <url-pattern>/client/*</url-pattern>
+    <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
 </web-app>
