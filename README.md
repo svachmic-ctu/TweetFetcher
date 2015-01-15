@@ -64,13 +64,6 @@ CREATE TABLE tweets (
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 GRANT ALL on twitterdb.* TO twitter@localhost IDENTIFIED BY 'twitterpwd';
-
-INSERT INTO users(user_name, screen_name, joined_date) VALUES("Jan.Neuzil", "@JohnnyCzech", "2014-11-11 22:22:22");
-INSERT INTO users(user_name, screen_name, joined_date) VALUES("Michal.Svacha", "@Svachic", "2011-11-11 22:22:22");
-INSERT INTO tweets(user_id, tweet, date) VALUES(1, "I got a job in Cisco.", "2014-12-06 22:22:22");
-INSERT INTO tweets(user_id, tweet, date) VALUES(1, "I love Prague.", "2014-12-07 22:22:22");
-INSERT INTO tweets(user_id, tweet, date) VALUES(2, "I got a job in Ubisoft.", "2014-11-05 22:22:22");
-INSERT INTO tweets(user_id, tweet, date) VALUES(2, "I love London.", "2014-11-06 22:22:22");
 ```
 
 Commands

@@ -7,12 +7,12 @@
    <title>LumX</title>
 
    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-   <link rel="stylesheet" href="/build/gdg.css">
+   <link rel="stylesheet" href="build/gdg.css">
 </head>
 
 <body ng-controller="AppController">
     <!-- Sidebar -->
-    <ng-include src="'includes/sidebar.html'"></ng-include>
+    <!-- <ng-include src="'includes/sidebar.html'"></ng-include> -->
 
     <!-- Main container -->
     <div class="main" ng-class="{ 'main--is-small': Layout.panelIsOpened }">
@@ -31,15 +31,15 @@
     <ng-include src="'includes/dialog.html'"></ng-include>
 
     <!-- Libs -->
-    <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/jquery.transit/jquery.transit.js"></script>
-    <script src="/bower_components/velocity/velocity.js"></script>
-    <script src="/bower_components/angular/angular.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery.transit/jquery.transit.js"></script>
+    <script src="bower_components/velocity/velocity.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
 
     <!-- App -->
     <script src="app.js"></script>
 
     <!-- LumX -->
-    <script src="/bower_components/lumx/dist/js/lumx.js"></script>
+    <script src="bower_components/lumx/dist/js/lumx.js"></script>
 </body>
 </html>

@@ -1,13 +1,13 @@
 <div class="main__content bgc-white">
     <div class="table-container">
-        <table class="data-table data-table--has-primary data-table--has-secondary">
+        <table class="data-table data-table--has-primary">
             <thead>
                 <tr>
                     <th></th>
-                    <th>Title</th>
-                    <th>Owner</th>
-                    <th class="text--right">Last Modified</th>
-                    <th></th>
+                    <th>Name</th>
+                    <th>Screen Name</th>
+                    <th class="text--right">Joined On</th>
+                    <!-- <th><th> -->
                 </tr>
             </thead>
 
@@ -17,15 +17,16 @@
                         <div lx-thumbnail thumbnail-src="{{ file.picture }}" thumbnail-width="40" thumbnail-height="40"></div>
                     </td>
                     <td>
-                        <strong>{{ file.title }}</strong>
+                        <strong>{{ file.name }}</strong>
                     </td>
                     <td>
-                        {{ file.owner.name }}
+                        {{ file.nick }}
                     </td>
                     <td class="text--right">
-                        {{ file.updated }}
+                        {{ file.date }}
                     </td>
                     <td>
+                    <!--
                         <lx-dropdown position="right" from-top="true">
                             <button class="btn btn--m btn--black btn--icon" lx-ripple lx-dropdown-toggle>
                                 <i class="mdi mdi--more-vert"></i>
@@ -41,8 +42,8 @@
                                     <li><a class="dropdown-link">Separated link</a></li>
                                 </ul>
                             </lx-dropdown-menu>
-                        </lx-dropdown>
-                    </td>
+                        </lx-dropdown>  -->
+                    </td> 
                 </tr>                    
            </tbody>
         </table>
