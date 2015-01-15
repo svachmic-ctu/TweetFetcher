@@ -1,5 +1,7 @@
 package com.tweetfetcher.server;
 
+import org.json.JSONObject;
+
 public interface JSONEncodable {
-	String jsonEncode();
+	JSONObject getJSON();
 }

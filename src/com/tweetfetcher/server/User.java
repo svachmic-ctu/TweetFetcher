@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * @author      Jan Neuzil     <jneuzil@isep.fr>
  * @author      Michal Svacha  <msvacha@isep.fr>
@@ -60,5 +63,21 @@ public class User implements Serializable {
 
 	public Timestamp getDate() {
 		return date;
+	}
+
+	public JSONObject getJSON() {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("id", id);
+			json.put("name", name);
+			json.put("nick", nick);
+			json.put("date", date);
+		}
+
+		catch (JSONException e) {
+			return null;
+		}
+
+		return json;
 	}
 }

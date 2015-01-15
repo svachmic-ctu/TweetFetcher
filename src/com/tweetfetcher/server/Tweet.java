@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * @author      Jan Neuzil     <jneuzil@isep.fr>
  * @author      Michal Svacha  <msvacha@isep.fr>
@@ -22,7 +25,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tweets")
-public class Tweet implements Serializable {
+public class Tweet implements Serializable, JSONEncodable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -65,5 +68,21 @@ public class Tweet implements Serializable {
 
 	public Timestamp getDate() {
 		return date;
+	}
+
+	public JSONObject getJSON() {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("id", id);
+			json.put("user", user.getNick());
+			json.put("tweet", tweet);
+			json.put("date", date);
+		}
+
+		catch (JSONException e) {
+			return null;
+		}
+
+		return json;
 	}
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 
 /**
  * Servlet implementation class TweetFetcher.
@@ -55,8 +56,8 @@ public class FetcherServer extends HttpServlet {
 
 		else if (action.equals(LIST_USERS)) {
 			log.info("Listing all users from the database.");
-			String result = logic.getUsers();
-			pw.println(result);
+			JSONArray result = logic.getUsers();
+			pw.println(result.toString());
 		}
 
 		else if (action.equals(LIST_TWEETS)) {
@@ -65,14 +66,14 @@ public class FetcherServer extends HttpServlet {
 				pw.println("Error: No user ID specified.");
 			}
 			log.info("Listing all tweets from the given user.");
-			String result = logic.getTweets(Integer.valueOf(id));
-			pw.println(result);
+			JSONArray result = logic.getTweets(Integer.valueOf(id));
+			pw.println(result.toString());
 		}
 
 		else if (action.equals(LIST_ALL)) {
 			log.info("Listing all tweets from the database.");
-			String result = logic.getAll();
-			pw.println(result);
+			JSONArray result = logic.getAll();
+			pw.println(result.toString());
 		}
 
 		else if (action.equals(UPDATE_DATA)) {
