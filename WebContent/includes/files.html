@@ -20,10 +20,10 @@
                         <strong>{{ file.name }}</strong>
                     </td>
                     <td>
-                        {{ file.nick }}
+                        {{ '@' + file.nick }}
                     </td>
                     <td class="text--right">
-                        {{ file.date }}
+                        {{ file.date | date}}
                     </td>
                     <td>
                     <!--

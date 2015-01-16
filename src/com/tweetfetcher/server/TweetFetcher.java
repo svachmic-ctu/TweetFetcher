@@ -20,15 +20,15 @@ import org.apache.log4j.Logger;
  */
 
 @Path("/get")
-public class FetcherServer {
+public class TweetFetcher {
 
-	static Logger log = Logger.getLogger(FetcherServer.class);
+	static Logger log = Logger.getLogger(TweetFetcher.class);
 	public static final String LIST_USERS = "listusers";
 	public static final String LIST_TWEETS = "listtweets";
 	public static final String LIST_ALL = "listall";
 	public static final String UPDATE_DATA = "updatedata";
 
-    public FetcherServer() {
+    public TweetFetcher() {
         log.info("TweetFetcher servlet is running.");
     }
 

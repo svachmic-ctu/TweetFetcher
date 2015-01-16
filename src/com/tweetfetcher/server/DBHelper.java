@@ -27,7 +27,7 @@ import twitter4j.TwitterFactory;
  */
 public class DBHelper {
 
-	static Logger log = Logger.getLogger(FetcherServer.class);
+	static Logger log = Logger.getLogger(TweetFetcher.class);
 
 	private static final int TWEETS_MAX = 10;
 	private static final String PERSISTENCEUNIT = "JPAService";
@@ -75,10 +75,10 @@ public class DBHelper {
 			return u;
 		} catch (Exception e) {
 			if (e.getClass() == NoResultException.class) {
-				log.info("User " + nick + " not found.");
+				log.info("User @" + nick + " not found.");
 				return new User();
 			} else if (e.getClass() == NonUniqueResultException.class) {
-				log.error("User " + nick + " duplicated in the database, fix it manually.");
+				log.error("User @" + nick + " duplicated in the database, fix it manually.");
 				return null;
 			} else {
 				log.error("Cannot get user from the database.");

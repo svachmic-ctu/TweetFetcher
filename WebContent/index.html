@@ -7,13 +7,11 @@
    <title>LumX</title>
 
    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-   <link rel="stylesheet" href="build/gdg.css">
+   <link rel="stylesheet" href="build/css/gdg.css">
 </head>
 
 <body ng-controller="AppController">
-    <!-- Sidebar -->
-    <!-- <ng-include src="'includes/sidebar.html'"></ng-include> -->
-
+    
     <!-- Main container -->
     <div class="main" ng-class="{ 'main--is-small': Layout.panelIsOpened }">
         <!-- Header -->
@@ -28,7 +26,6 @@
     <ng-include src="'includes/panel.html'"></ng-include>
 
     <!-- Dialog -->
-    <ng-include src="'includes/dialog.html'"></ng-include>
 
     <!-- Libs -->
     <script src="bower_components/jquery/dist/jquery.js"></script>

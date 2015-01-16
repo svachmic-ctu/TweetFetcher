@@ -1,7 +1,7 @@
 <!-- Sidebar -->
 <div class="panel bgc-white" ng-class="{ 'panel--is-opened': Layout.panelIsOpened }">
     <!-- Header -->
-    <header class="panel-header bgc-red-600 tc-white">
+    <header class="panel-header bgc-red-600 tc-white z-depth1">
         <div class="toolbar">
             <div class="toolbar__left">
                 <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="Layout.closePanel()">
@@ -9,15 +9,6 @@
                 </button>
             </div>
 
-            <div class="toolbar__right">
-                <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="editFile(selectedFile)">
-                    <i class="mdi mdi--edit"></i>
-                </button>
-
-                <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="deleteFile(selectedFile)">
-                    <i class="mdi mdi--delete"></i>
-                </button>
-            </div>
         </div>
 
         <div class="panel-header__title">
@@ -33,7 +24,7 @@
         <ul class="list">    
             <li ng-repeat="tweet in tweets" class="tweet">
                 {{ tweet.tweet }}
-                <span class="date">{{ tweet.date }}</date>
+                <span class="date">{{ tweet.date | date : 'medium'}}</date>
             </li>
         </ul>
     </div>

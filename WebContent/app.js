@@ -3,7 +3,7 @@
 
 
 var app = angular.module('gdg', ['lumx']);
-var is_demo = true;
+var is_demo = false;
 
 app.controller('AppController', function($scope, Layout, LxDialogService, LxNotificationService, $http)
 {   
@@ -12,27 +12,36 @@ app.controller('AppController', function($scope, Layout, LxDialogService, LxNoti
     $scope.data = {
         filter: undefined
     };
+    $scope.selectedFile = null;
 
-
-    //http://localhost:8080/TweetFetcher/api/get/user?action=listusers 
-    //http://localhost:8080/TweetFetcher/api/get/tweet?action=listtweets&userid=1 
-    //http://localhost:8080/TweetFetcher/api/get/tweet?action=listall 
-    //http://localhost:8080/TweetFetcher/api/get/data?action=updatedata
+    var tweet_fetcher_api = 'api/';
+    
+    $scope.updateTweets = function(){
+      $http.get(is_demo ? 'demo/updatadata' : (tweet_fetcher_api + 'get/data?action=updatedata'))
+	.success(function(data){
+	  if($scope.selectedFile) fetchTweets();
+	  LxNotificationService.info('Tweets updated, ' + data.cnt + " tweets added.");
+	});;
+    };
 
     var fetchTweets = function(){
-        $http.get(is_demo ? 'demo/listtweets' : ('TweetFetcher/api/get/tweet?action=listtweets&userid=' + parseInt($scope.selectedFile.id)))
+        var url = is_demo ? 'demo/listall' : (tweet_fetcher_api + 'get/tweet?action=listall');
+	if($scope.selectedFile && $scope.selectedFile.id != -1) 
+	  url = is_demo ? 'demo/listtweets' : 
+          (tweet_fetcher_api + 'get/tweet?action=listtweets&userid=' + parseInt($scope.selectedFile.id));
+	
+        $http.get(url)
 	  .success(function(data){
 	      $scope.tweets = data;
 	  });
     };
 
-    $http.get(is_demo ? 'demo/listusers' : '/TweetFetcher/api/get/user?action=listusers').
+    $http.get(is_demo ? 'demo/listusers' : (tweet_fetcher_api + 'get/user?action=listusers')).
         success(function(data) {
-	    
-            //$scope.greeting = data;
-            console.log(data);
-
-            $scope.files = data;
+            $scope.files = [{
+	      id : -1,
+	      name: 'All tweets',
+	    }].concat(data);
 	    
 	    $scope.selectFile = function(file)
             {

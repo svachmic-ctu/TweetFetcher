@@ -36,7 +36,6 @@ public class Tweet implements Serializable {
 	@Column(name = "tweet_id")
 	private int id;
 
-	@XmlElement
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", referencedColumnName="user_id")
 	private User user;
