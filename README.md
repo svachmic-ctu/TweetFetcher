@@ -1,10 +1,16 @@
 TweetFetcher
 ============
+A simple web service to provide last tweets from selected 
+Twitter users. 
 
 Authors
 =======
-Jan Neuzil <jneuzil@isep.fr>
+Jan Neuzil <jneuzil@isep.fr><br>
 Michal Svacha <msvacha@isep.fr>
+
+Functionality
+=============
+
 
 Eclipse Configuration
 =====================
@@ -19,7 +25,7 @@ To extend Tomcat memory in Eclipse go to:
 ```
 Run -> Run Configurations -> Apache Tomcat -> Tomcat Server -> Arguments
 ```
-At the end put:<br>
+At the end put:
 ```
 -XX:PermSize=256m -XX:MaxPermSize=512m
 ```
@@ -32,8 +38,8 @@ To connect to twitter via API create and set twitter4j.properties file:
 $ touch $(PROJECT_DIR)/src/twitter4j.properties
 ```
 
-Creating databases
-==================
+MySQL Configuration
+===================
 
 Install mysql database:
 ```
@@ -70,6 +76,32 @@ CREATE TABLE tweets (
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 GRANT ALL on twitterdb.* TO twitter@localhost IDENTIFIED BY 'twitterpwd';
+```
+
+AngularJS Configuration
+=======================
+
+Install Ruby version management:
+```
+$ sudo apt-get install rbenv
+```
+Install Sass:
+```
+$ sudo gem install sass
+```
+Go to WebContent:
+```
+$ cd WebContent
+```
+Create build directories:
+```
+$ mkdir build
+$ mkdir build/css
+```
+Run Sass and delete useless cache:
+```
+$ sass scss/gdg.scss build/css/gdg.css
+$ rm -r .sass-cache
 ```
 
 Commands
