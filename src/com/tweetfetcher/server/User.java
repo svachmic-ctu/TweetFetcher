@@ -44,14 +44,19 @@ public class User implements Serializable {
 	@Column(name = "joined_date")
 	private Timestamp date;
 
+	@XmlElement
+	@Column(name = "picture", length = 512)
+	private String picture;
+
 	public User () {
 		// Default constructor.
 	}
 
-	public User(String name, String nick, Timestamp date) {
+	public User(String name, String nick, Timestamp date, String picture) {
 		this.name = name;
 		this.nick = nick;
 		this.date = date;
+		this.picture = picture;
 	}
 
 	public int getId() {
@@ -68,5 +73,9 @@ public class User implements Serializable {
 
 	public Timestamp getDate() {
 		return date;
+	}
+
+	public String getPicture() {
+		return picture;
 	}
 }

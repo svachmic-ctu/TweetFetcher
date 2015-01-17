@@ -1,19 +1,24 @@
 <!-- Sidebar -->
 <div class="panel bgc-white" ng-class="{ 'panel--is-opened': Layout.panelIsOpened }">
     <!-- Header -->
-    <header class="panel-header bgc-red-600 tc-white z-depth1">
+    <header class="panel-header bgc-blue-500 tc-white z-depth1">
         <div class="toolbar">
             <div class="toolbar__left">
                 <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="Layout.closePanel()">
                     <i class="mdi mdi--close"></i>
                 </button>
             </div>
+            <div class="toolbar__right">
+                <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="deleteUser()">
+                    <i class="mdi mdi--delete"></i>
+                </button>
+            </div>
 
         </div>
 
         <div class="panel-header__title">
-            <strong class="fs-subhead">{{ selectedFile.name }}</strong>
-            <span class="fs-body1 tc-white-2">List of tweets</span>
+            <strong class="fs-subhead">{{ user.name }}</strong>
+            <span class="fs-body1 tc-white-2">List of last tweets</span>
         </div>
     </header>
     <!-- /Header -->

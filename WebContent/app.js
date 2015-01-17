@@ -5,52 +5,85 @@
 var app = angular.module('gdg', ['lumx']);
 var is_demo = false;
 
-app.controller('AppController', function($scope, Layout, LxDialogService, LxNotificationService, $http)
-{   
+app.controller('AppController', function($scope, Layout, LxDialogService, LxNotificationService, $http) {   
     $scope.Layout = Layout;
 
     $scope.data = {
         filter: undefined
     };
-    $scope.selectedFile = null;
 
-    var tweet_fetcher_api = 'api/';
-    
-    $scope.updateTweets = function(){
-      $http.get(is_demo ? 'demo/updatadata' : (tweet_fetcher_api + 'get/data?action=updatedata'))
-	.success(function(data){
-	  if($scope.selectedFile) fetchTweets();
-	  LxNotificationService.info('Tweets updated, ' + data.cnt + " tweets added.");
-	});;
-    };
+    $scope.selectedUser = null;
+    $scope.userDialog = {nick: null}
 
-    var fetchTweets = function(){
-        var url = is_demo ? 'demo/listall' : (tweet_fetcher_api + 'get/tweet?action=listall');
-	if($scope.selectedFile && $scope.selectedFile.id != -1) 
-	  url = is_demo ? 'demo/listtweets' : 
-          (tweet_fetcher_api + 'get/tweet?action=listtweets&userid=' + parseInt($scope.selectedFile.id));
-	
-        $http.get(url)
-	  .success(function(data){
-	      $scope.tweets = data;
-	  });
-    };
+    var tweet_fetcher_api = 'var/api/';
 
-    $http.get(is_demo ? 'demo/listusers' : (tweet_fetcher_api + 'get/user?action=listusers')).
-        success(function(data) {
-            $scope.files = [{
-	      id : -1,
-	      name: 'All tweets',
-	    }].concat(data);
-	    
-	    $scope.selectFile = function(file)
-            {
-                $scope.selectedFile = file;
-		fetchTweets();
-                Layout.openPanel();
-            };
+    var fetchUsers = function() {
+    	var url = is_demo ? 'demo/listusers' : (tweet_fetcher_api + 'get/user?action=list');
+
+        $http.get(url).success(function(data) {
+        	$scope.users = data;
+
+    	    $scope.selectUser = function(user) {
+    	    	$scope.selectedUser = user;
+    	    	fetchTweets();
+    	    	Layout.openPanel();
+    	    };
 
         });
+    };
+
+    var fetchTweets = function() {
+    	var url = is_demo ? 'demo/listtweets' : (tweet_fetcher_api + 'get/tweet?action=list&id=' + parseInt($scope.selectedUser.id));
+
+    	$http.get(url).success(function(data) {
+    		$scope.tweets = data;
+    	});
+    };    
+
+    $scope.updateData = function() {
+    	var url = is_demo ? 'demo/updatadata' : (tweet_fetcher_api + 'get/data?action=update');
+    	$http.get(url).success(function(data) {
+    		if($scope.selectedUser) {
+    			fetchTweets();
+    		}
+    		LxNotificationService.info("Tweets updated, " + data.cnt + " tweets added.");
+    		fetchUsers();
+    	});
+    };
+
+    $scope.addUser = function() {
+    	var url = (tweet_fetcher_api + 'post/user?action=add&nick=' + $scope.userDialog.nick);
+    	$http.get(url).success(function(data) {
+    		if(data.ret == "OK") {
+    			LxNotificationService.info("User @" + $scope.userDialog.nick + " has been succesfully added.");
+    		    fetchUsers();
+    		} else {
+    			LxNotificationService.info("User @" + $scope.userDialog.nick + " has not been found on Twitter.");
+    		}
+    	});
+    };
+
+   $scope.deleteUser = function()
+    {
+        LxNotificationService.confirm('Delete user', 'Are you sure you want to delete this user?', { cancel:'Cancel', ok:'Delete' }, function(answer) {
+        	var url = (tweet_fetcher_api + 'delete/user?action=delete&id=' + parseInt($scope.selectedUser.id));
+            $http.get(url).success(function(data) {
+        		if(data.ret == "OK") {
+        			LxNotificationService.info("User @" + $scope.selectedUser.nick + " has been succesfully deleted.");
+        		    fetchUsers();
+        		} else {
+        			LxNotificationService.info("User @" + $scope.selectedUser.nick + " cannot be deleted.");
+        		}
+        		
+        	});
+        });
+    };
+
+    $scope.userManagement = function() {
+        LxDialogService.open('user-management');
+    }
+
+    fetchUsers();
 });
 
 app.service('Layout', function()

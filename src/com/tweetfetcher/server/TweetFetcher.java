@@ -19,14 +19,20 @@ import org.apache.log4j.Logger;
  * @since       2014-11-17
  */
 
-@Path("/get")
+@Path("/api")
 public class TweetFetcher {
 
 	static Logger log = Logger.getLogger(TweetFetcher.class);
-	public static final String LIST_USERS = "listusers";
-	public static final String LIST_TWEETS = "listtweets";
+	public static final String ACTION = "action";
+	public static final String USER_ID = "id";
+	public static final String GET_PATH = "/get";
+	public static final String POST_PATH = "/post";
+	public static final String USER_PATH = "/user";
+	public static final String TWEET_PATH = "/tweet";
+	public static final String DATA_PATH = "/data";
+	public static final String LIST = "list";
 	public static final String LIST_ALL = "listall";
-	public static final String UPDATE_DATA = "updatedata";
+	public static final String UPDATE_DATA = "update";
 
     public TweetFetcher() {
         log.info("TweetFetcher servlet is running.");
@@ -34,15 +40,15 @@ public class TweetFetcher {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/user")
-	public List<User> fetchUser(@QueryParam("action") String action) {
+	@Path(GET_PATH + USER_PATH)
+	public List<User> fetchUser(@QueryParam(ACTION) String action) {
 
 		if (action == null) {
 			log.error("No action specified.");
 			return null;
 		}
 
-		else if (action.equals(LIST_USERS)) {
+		else if (action.equals(LIST)) {
 			log.info("Listing all users from the database.");
 			List<User> result = DBHelper.listUsers();
 			if (!result.isEmpty()) {
@@ -59,15 +65,15 @@ public class TweetFetcher {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/tweet")
-	public List<Tweet> fetchTweet(@QueryParam("action") String action, @QueryParam("userid") String id) {
+	@Path(GET_PATH + TWEET_PATH)
+	public List<Tweet> fetchTweet(@QueryParam(ACTION) String action, @QueryParam(USER_ID) String id) {
 
 		if (action == null) {
 			log.error("No action specified.");
 			return null;
 		}
 
-		else if (action.equals(LIST_TWEETS)) {
+		else if (action.equals(LIST)) {
 			if (id == null) {
 				log.error("No user ID specified.");
 				return null;
@@ -99,8 +105,8 @@ public class TweetFetcher {
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	@Path("/data")
-	public String fetchData(@QueryParam("action") String action) {
+	@Path(GET_PATH + DATA_PATH)
+	public String fetchData(@QueryParam(ACTION) String action) {
 
 		if (action == null) {
 			log.error("No action specified.");
@@ -116,5 +122,5 @@ public class TweetFetcher {
 
 		log.error("Unrecongnized command.");
 		return null;
-	}
+	}	
 }

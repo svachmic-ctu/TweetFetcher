@@ -1,32 +1,31 @@
 <div class="main__content bgc-white">
     <div class="table-container">
-        <table class="data-table data-table--has-primary">
+        <table class="data-table data-table--has-primary data-table--has-secondary">
             <thead>
                 <tr>
                     <th></th>
                     <th>Name</th>
                     <th>Screen Name</th>
                     <th class="text--right">Joined On</th>
-                    <!-- <th><th> -->
+                    <th></th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr class="data-table__clickable-row" ng-repeat="file in files | filter:data.filter" ng-click="selectFile(file)">
+                <tr class="data-table__clickable-row" ng-repeat="user in users | filter:data.filter" ng-click="selectUser(user)">
                     <td>
-                        <div lx-thumbnail thumbnail-src="{{ file.picture }}" thumbnail-width="40" thumbnail-height="40"></div>
+                        <div lx-thumbnail thumbnail-src="{{ user.picture }}" thumbnail-width="40" thumbnail-height="40"></div>
                     </td>
                     <td>
-                        <strong>{{ file.name }}</strong>
+                        <strong>{{ user.name }}</strong>
                     </td>
                     <td>
-                        {{ '@' + file.nick }}
+                        {{ '@' + user.nick }}
                     </td>
                     <td class="text--right">
-                        {{ file.date | date}}
+                        {{ user.date | date:'medium'}}
                     </td>
-                    <td>
-                    <!--
+                	<td>
                         <lx-dropdown position="right" from-top="true">
                             <button class="btn btn--m btn--black btn--icon" lx-ripple lx-dropdown-toggle>
                                 <i class="mdi mdi--more-vert"></i>
@@ -42,8 +41,8 @@
                                     <li><a class="dropdown-link">Separated link</a></li>
                                 </ul>
                             </lx-dropdown-menu>
-                        </lx-dropdown>  -->
-                    </td> 
+                        </lx-dropdown>
+                    </td>
                 </tr>                    
            </tbody>
         </table>

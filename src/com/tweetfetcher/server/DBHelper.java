@@ -39,12 +39,12 @@ public class DBHelper {
 		emfactory = Persistence.createEntityManagerFactory(PERSISTENCEUNIT);
 	}
 
-	static boolean createUser(String name, String nick, Timestamp date) {
+	static boolean createUser(String name, String nick, Timestamp date, String picture) {
 		EntityManager em = emfactory.createEntityManager();
 		log.trace("EntityManager = " + em);
 
 		em.getTransaction().begin();
-		User u = new User(name, nick, date);
+		User u = new User(name, nick, date, picture);
 		em.persist(u);
 		em.getTransaction().commit();
 		return true;
@@ -190,13 +190,13 @@ public class DBHelper {
 						date = new Timestamp(tu.getCreatedAt().getTime());
 
 						// Creating a new user based on retrieved values from Twitter API.
-						createUser(tu.getName(), USERS[i], date);
+						createUser(tu.getName(), USERS[i], date, tu.getProfileImageURL());
 					}
 	
 				    List<Status> statuses = twitter.getUserTimeline(USERS[i], paging);
 				    for (Status s : statuses) {
 				    	date = new Timestamp(s.getCreatedAt().getTime());
-				    	
+
 				    	// Trying to find the user in the database.
 				    	if ((tweet = findTweet(USERS[i], date)) != null) {
 

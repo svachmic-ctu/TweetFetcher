@@ -1,0 +1,25 @@
+<div class="dialog dialog--l" id="user-management" lx-dialog>
+    <div class="toolbar bgc-blue-500">
+        <div class="toolbar__left">
+            <i class="icon icon--l icon--white icon--flat mdi mdi--note-add"></i>
+        </div>
+
+        <strong class="toolbar__label tc-white">
+            <span ng-if="editingFile._id">Edit user</span>
+            <span ng-if="!editingFile._id">Add user</span>
+        </strong>
+    </div>
+
+    <lx-tabs links-tc="light" links-bgc="blue-500" indicator="yellow-500" no-divider="true">
+       <lx-tab icon="people">
+            <div class="p pt0">
+                <lx-text-field label="Username" model="userDialog.nick"></lx-text-field>
+            </div>
+        </lx-tab>
+    </lx-tabs>
+
+    <div class="dialog__actions">
+        <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close>Cancel</button>
+        <button class="btn btn--m btn--blue btn--flat" lx-ripple ng-click="addUser()">Add user</button>
+    </div>
+</div>

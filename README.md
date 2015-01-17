@@ -62,6 +62,7 @@ CREATE TABLE users (
 	user_name VARCHAR(15) NOT NULL,
 	screen_name VARCHAR(15) NOT NULL,
 	joined_date TIMESTAMP,
+	picture VARCHAR(512),
 	PRIMARY KEY(user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
@@ -107,10 +108,13 @@ $ rm -r .sass-cache
 Commands
 ========
 
-http://localhost:8080/api/get/user?action=listusers
-http://localhost:8080/api/get/tweet?action=listtweets&userid=1
-http://localhost:8080/api/get/tweet?action=listall
-http://localhost:8080/api/get/data?action=updatedata
+To test the server side:
+```
+$ wget http://localhost:8080/var/api/get/user?action=list
+$ wget http://localhost:8080/var/api/get/tweet?action=list&id=1
+$ wget http://localhost:8080/var/api/get/tweet?action=listall
+$ wget http://localhost:8080/var/api/get/data?action=update
+```
 
 Notes
 =====

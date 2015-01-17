@@ -1,4 +1,4 @@
-<header class="header bgc-red-500 z-depth1">
+<header class="header bgc-blue-500 z-depth1">
     <div class="toolbar">
         <div class="toolbar__left">
             <!-- <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="Layout.toggleSidebar()">
@@ -7,21 +7,21 @@
         </div>
 
         <div class="toolbar__right">
-            <!-- <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="Layout.togglePanel()">
-                <i class="mdi mdi--info"></i>
+            <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="updateData()">
+                <i class="mdi mdi--refresh"></i>
             </button>
 
-            <button class="btn btn--l btn--white btn--icon" lx-ripple>
+            <!--<button class="btn btn--l btn--white btn--icon" lx-ripple>
                 <i class="mdi mdi--apps"></i>
-            </button>
+            </button> -->
             
-            <lx-search-filter closed theme="light" model="data.filter"></lx-search-filter> -->
+            <lx-search-filter closed theme="light" model="data.filter"></lx-search-filter>
         </div>
     </div>
 
     <h1 class="header__title fs-display1 tc-white">Twitter Users</h1>
 
-    <button class="header__fab btn btn--xl btn--white btn--fab" lx-ripple ng-click="updateTweets()">
-        <i class="mdi mdi--refresh"></i>
+    <button class="header__fab btn btn--xl btn--white btn--fab" lx-ripple ng-click="userManagement()">
+        <i class="mdi mdi--add"></i>
     </button>
 </header>
