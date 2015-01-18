@@ -73,6 +73,7 @@ app.controller('AppController', function($scope, Layout, LxDialogService, LxNoti
             	var ret = parseInt(data.users);
         		if(ret == 1) {
         			LxNotificationService.info(data.message);
+        			Layout.closePanel();
         		    fetchUsers();
         		} else {
         			LxNotificationService.info(data.message);

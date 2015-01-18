@@ -243,7 +243,11 @@ public class DBHelper {
 						// Creating a new user based on retrieved values from Twitter API.
 						createUser(tu.getName(), nick, date, tu.getProfileImageURL());
 						cnt ++;
-					}
+					} else {
+		    			log.warn("User @" + nick + " is already in the database.");
+		    			response.setMessage("User @" + nick + " is already in the TweetFetcher.");
+		    			return response;
+		    		}
 	
 				    List<Status> statuses = twitter.getUserTimeline(nick, paging);
 				    for (Status s : statuses) {
@@ -260,15 +264,11 @@ public class DBHelper {
 							}
 				    	}
 				    }
-	    		} else {
-	    			log.warn("User @" + nick + " is already in the database.");
-	    			response.setMessage("User @" + nick + " is already in the TweetFetcher.");
-	    			return response;
 	    		}
 		} catch (TwitterException te) {
 			te.printStackTrace();
 			log.error("Failed to get tweets: " + te.getMessage());
-			response.setMessage("Adding user @" + nick + "has failed.");
+			response.setMessage("User @" + nick + "has not been found on Twitter.");
 			return response;
 		}
 
@@ -294,7 +294,7 @@ public class DBHelper {
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			log.error("Failed to commit transaction: " + e.getMessage());
-			response.setMessage("Adding user @" + nick + "has failed.");
+			response.setMessage("Deleting user @" + nick + "has failed.");
 			return response;
 		}
 
