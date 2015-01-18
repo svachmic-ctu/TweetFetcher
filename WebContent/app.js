@@ -41,8 +41,8 @@ app.controller('AppController', function($scope, Layout, LxDialogService, LxNoti
     };    
 
     $scope.updateData = function() {
-    	var url = is_demo ? 'demo/updatadata' : (tweet_fetcher_api + 'get/data?action=update');
-    	$http.get(url).success(function(data) {
+    	var url = is_demo ? 'demo/updatadata' : (tweet_fetcher_api + 'post/data?action=update');
+    	$http.post(url).success(function(data) {
     		if($scope.selectedUser) {
     			fetchTweets();
     		}
@@ -53,9 +53,11 @@ app.controller('AppController', function($scope, Layout, LxDialogService, LxNoti
 
     $scope.addUser = function() {
     	var url = (tweet_fetcher_api + 'post/user?action=add&nick=' + $scope.userDialog.nick);
-    	$http.get(url).success(function(data) {
-    		if(data.ret == "OK") {
+    	$http.post(url).success(function(data) {
+    		var ret = parseInt(data.cnt);
+    		if(ret == 1) {
     			LxNotificationService.info("User @" + $scope.userDialog.nick + " has been succesfully added.");
+    			LxDialogService.close('user-management');
     		    fetchUsers();
     		} else {
     			LxNotificationService.info("User @" + $scope.userDialog.nick + " has not been found on Twitter.");

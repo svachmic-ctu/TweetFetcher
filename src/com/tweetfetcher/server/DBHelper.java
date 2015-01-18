@@ -31,7 +31,6 @@ public class DBHelper {
 
 	private static final int TWEETS_MAX = 10;
 	private static final String PERSISTENCEUNIT = "JPAService";
-	private static final String[] USERS = {"startupvillage", "GlassFrance", "altolabs"};
 	private static EntityManagerFactory emfactory;
 
 	static {
@@ -169,6 +168,53 @@ public class DBHelper {
 	
 	static int updateData() {
 		int cnt = 0;
+		Tweet tweet;
+		Timestamp date;
+
+		List<User> users = listUsers();
+		if (users.isEmpty()) {
+			return cnt;
+		}
+
+		try {
+			// Connect to twitter API via twitter4j.properties file.
+			Twitter twitter = TwitterFactory.getSingleton();
+
+			// Set the paging to list the last 10 tweets.
+		    Paging paging = new Paging(1, TWEETS_MAX);
+
+		    for (User user : users) {
+	
+				List<Status> statuses = twitter.getUserTimeline(user.getNick(), paging);
+				for (Status s : statuses) {
+					date = new Timestamp(s.getCreatedAt().getTime());
+
+					// Trying to find the user in the database.
+					if ((tweet = findTweet(user.getNick(), date)) != null) {
+
+						// Creating new tweet if the tweet is returned empty.
+						if (tweet.getTweet() == null) {
+
+							// Creating a new tweet based on retrieved values
+							// from Twitter API.
+							createTweet(user.getNick(), s.getText(), date);
+							cnt++;
+						}
+					}
+				}
+		    }
+		} catch (TwitterException te) {
+			te.printStackTrace();
+			log.error("Failed to get tweets: " + te.getMessage());
+			return cnt;
+		}
+
+		log.info(cnt + " new tweets added into the database");
+		return cnt;
+	}
+
+	static int addUser(String nick) {
+		int cnt = 0;
 		User user;
 		Tweet tweet;
 		Timestamp date;
@@ -180,40 +226,39 @@ public class DBHelper {
 			// Set the paging to list the last 10 tweets.
 		    Paging paging = new Paging(1, TWEETS_MAX);
 
-		    for (int i = 0; i < USERS.length; i ++) {
 	    		// Trying to find the user in the database.
-	    		if ((user = findUser(USERS[i])) != null) {
+	    		if ((user = findUser(nick)) != null) {
 
 		    		// Creating new user if the user is returned empty.
 					if (user.getNick() == null) {
-						twitter4j.User tu = twitter.showUser(USERS[i]);
+						twitter4j.User tu = twitter.showUser(nick);
 						date = new Timestamp(tu.getCreatedAt().getTime());
 
 						// Creating a new user based on retrieved values from Twitter API.
-						createUser(tu.getName(), USERS[i], date, tu.getProfileImageURL());
+						createUser(tu.getName(), nick, date, tu.getProfileImageURL());
+						cnt ++;
 					}
 	
-				    List<Status> statuses = twitter.getUserTimeline(USERS[i], paging);
+				    List<Status> statuses = twitter.getUserTimeline(nick, paging);
 				    for (Status s : statuses) {
 				    	date = new Timestamp(s.getCreatedAt().getTime());
 
 				    	// Trying to find the user in the database.
-				    	if ((tweet = findTweet(USERS[i], date)) != null) {
+				    	if ((tweet = findTweet(nick, date)) != null) {
 
 				    		// Creating new tweet if the tweet is returned empty.
 							if (tweet.getTweet() == null) {
 
 								// Creating a new tweet based on retrieved values from Twitter API.
-								createTweet(USERS[i], s.getText(), date);
-								cnt ++;
+								createTweet(nick, s.getText(), date);
 							}
 				    	}
 				    }
 	    		}
-		    }
 		} catch (TwitterException te) {
 			te.printStackTrace();
 			log.error("Failed to get tweets: " + te.getMessage());
+			return cnt;
 		}
 
 		log.info(cnt + " new tweets added into the database");

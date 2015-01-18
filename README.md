@@ -113,7 +113,8 @@ To test the server side:
 $ wget http://localhost:8080/var/api/get/user?action=list
 $ wget http://localhost:8080/var/api/get/tweet?action=list&id=1
 $ wget http://localhost:8080/var/api/get/tweet?action=listall
-$ wget http://localhost:8080/var/api/get/data?action=update
+$ wget http://localhost:8080/var/api/post/data?action=update
+$ wget http://localhost:8080/var/api/post/user?action=add&nick=altolabs
 ```
 
 Notes

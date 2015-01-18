@@ -16,6 +16,6 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>FetcherServer</servlet-name>
-    <url-pattern>/api/*</url-pattern>
+    <url-pattern>/var/*</url-pattern>
   </servlet-mapping>
 </web-app>
