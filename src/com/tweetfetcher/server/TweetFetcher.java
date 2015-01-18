@@ -35,6 +35,7 @@ public class TweetFetcher {
 	public static final String LIST_ALL = "listall";
 	public static final String UPDATE_DATA = "update";
 	public static final String ADD_USER = "add";
+	public static final String DELETE_USER = "delete";
 
     public TweetFetcher() {
         log.info("TweetFetcher servlet is running.");
@@ -106,9 +107,9 @@ public class TweetFetcher {
 	}
 
 	@POST
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path(POST_PATH + DATA_PATH)
-	public String updateData(@QueryParam(ACTION) String action) {
+	public Response updateData(@QueryParam(ACTION) String action) {
 
 		if (action == null) {
 			log.error("No action specified.");
@@ -117,8 +118,7 @@ public class TweetFetcher {
 
 		else if (action.equals(UPDATE_DATA)) {
 			log.info("Updating the database with new tweets.");
-			int cnt = DBHelper.updateData();
-			String result = "{\"cnt\":" + cnt + "}";
+			Response result = DBHelper.updateData();
 			return result;
 		}
 
@@ -127,9 +127,9 @@ public class TweetFetcher {
 	}
 
 	@POST
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path(POST_PATH + USER_PATH)
-	public String addUser(@QueryParam(ACTION) String action, @QueryParam("nick") String nick) {
+	public Response addUser(@QueryParam(ACTION) String action, @QueryParam("nick") String nick, @QueryParam("id") int id) {
 		
 		if (action == null) {
 			log.error("No action specified.");
@@ -137,14 +137,18 @@ public class TweetFetcher {
 		}
 
 		else if (action.equals(ADD_USER)) {
-			log.info("Updating the database with new user.");
-			int cnt = DBHelper.addUser(nick);
-			String result = "{\"cnt\":" + cnt + "}";
+			log.info("Adding a new user to the database.");
+			Response result = DBHelper.addUser(nick);
+			return result;
+		}
+
+		else if (action.equals(DELETE_USER)) {
+			log.info("Deleting a user from the database.");
+			Response result = DBHelper.deleteUser(id);
 			return result;
 		}
 
 		log.error("Unrecongnized command.");
 		return null;
 	}
-	
 }

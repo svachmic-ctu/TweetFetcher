@@ -166,14 +166,16 @@ public class DBHelper {
 		return result;
 	}
 	
-	static int updateData() {
+	static Response updateData() {
 		int cnt = 0;
 		Tweet tweet;
 		Timestamp date;
 
+		Response response = new Response();
 		List<User> users = listUsers();
 		if (users.isEmpty()) {
-			return cnt;
+			response.setMessage("No users found in the database");
+			return response;
 		}
 
 		try {
@@ -198,7 +200,7 @@ public class DBHelper {
 							// Creating a new tweet based on retrieved values
 							// from Twitter API.
 							createTweet(user.getNick(), s.getText(), date);
-							cnt++;
+							cnt ++;
 						}
 					}
 				}
@@ -206,18 +208,22 @@ public class DBHelper {
 		} catch (TwitterException te) {
 			te.printStackTrace();
 			log.error("Failed to get tweets: " + te.getMessage());
-			return cnt;
+			response.setMessage("Failed to update data.");
+			return response;
 		}
 
 		log.info(cnt + " new tweets added into the database");
-		return cnt;
+		response.setTweets(cnt);
+		response.setMessage(cnt + " tweets added, TweetFetcher updated");
+		return response;
 	}
 
-	static int addUser(String nick) {
+	static Response addUser(String nick) {
 		int cnt = 0;
 		User user;
 		Tweet tweet;
 		Timestamp date;
+		Response response = new Response();
 
 		try {
 			// Connect to twitter API via twitter4j.properties file.
@@ -254,14 +260,46 @@ public class DBHelper {
 							}
 				    	}
 				    }
+	    		} else {
+	    			log.warn("User @" + nick + " is already in the database.");
+	    			response.setMessage("User @" + nick + " is already in the TweetFetcher.");
+	    			return response;
 	    		}
 		} catch (TwitterException te) {
 			te.printStackTrace();
 			log.error("Failed to get tweets: " + te.getMessage());
-			return cnt;
+			response.setMessage("Adding user @" + nick + "has failed.");
+			return response;
 		}
 
 		log.info(cnt + " new tweets added into the database");
-		return cnt;
+		response.setUsers(cnt);
+		response.setMessage("User @" + nick + " has been succesfully added.");
+		return response;
+	}
+
+	static Response deleteUser(int id) {
+		Response response = new Response();
+
+		EntityManager em = emfactory.createEntityManager();
+		log.trace("EntityManager = " + em);
+
+		TypedQuery<User> uq = em.createQuery("SELECT u FROM User u WHERE u.id = " + id , User.class);
+		User user = uq.getSingleResult();
+		String nick = user.getNick();
+
+		try {
+			em.getTransaction().begin();
+			em.remove(user);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			log.error("Failed to commit transaction: " + e.getMessage());
+			response.setMessage("Adding user @" + nick + "has failed.");
+			return response;
+		}
+
+		response.setUsers(1);
+		response.setMessage("User @" + nick + " has been succesfully deleted.");
+		return response;
 	}
 }

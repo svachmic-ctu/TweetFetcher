@@ -46,7 +46,7 @@ app.controller('AppController', function($scope, Layout, LxDialogService, LxNoti
     		if($scope.selectedUser) {
     			fetchTweets();
     		}
-    		LxNotificationService.info("Tweets updated, " + data.cnt + " tweets added.");
+    		LxNotificationService.info(data.message);
     		fetchUsers();
     	});
     };
@@ -54,13 +54,13 @@ app.controller('AppController', function($scope, Layout, LxDialogService, LxNoti
     $scope.addUser = function() {
     	var url = (tweet_fetcher_api + 'post/user?action=add&nick=' + $scope.userDialog.nick);
     	$http.post(url).success(function(data) {
-    		var ret = parseInt(data.cnt);
+    		var ret = parseInt(data.users);
     		if(ret == 1) {
-    			LxNotificationService.info("User @" + $scope.userDialog.nick + " has been succesfully added.");
+    			LxNotificationService.info(data.message);
     			LxDialogService.close('user-management');
     		    fetchUsers();
     		} else {
-    			LxNotificationService.info("User @" + $scope.userDialog.nick + " has not been found on Twitter.");
+    			LxNotificationService.info(data.message);
     		}
     	});
     };
@@ -68,13 +68,14 @@ app.controller('AppController', function($scope, Layout, LxDialogService, LxNoti
    $scope.deleteUser = function()
     {
         LxNotificationService.confirm('Delete user', 'Are you sure you want to delete this user?', { cancel:'Cancel', ok:'Delete' }, function(answer) {
-        	var url = (tweet_fetcher_api + 'delete/user?action=delete&id=' + parseInt($scope.selectedUser.id));
-            $http.get(url).success(function(data) {
-        		if(data.ret == "OK") {
-        			LxNotificationService.info("User @" + $scope.selectedUser.nick + " has been succesfully deleted.");
+        	var url = (tweet_fetcher_api + 'post/user?action=delete&id=' + parseInt($scope.selectedUser.id));
+            $http.post(url).success(function(data) {
+            	var ret = parseInt(data.users);
+        		if(ret == 1) {
+        			LxNotificationService.info(data.message);
         		    fetchUsers();
         		} else {
-        			LxNotificationService.info("User @" + $scope.selectedUser.nick + " cannot be deleted.");
+        			LxNotificationService.info(data.message);
         		}
         		
         	});

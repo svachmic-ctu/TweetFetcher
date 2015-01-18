@@ -73,7 +73,7 @@ CREATE TABLE tweets (
 	tweet VARCHAR(140) NOT NULL,
 	date TIMESTAMP NOT NULL,
 	PRIMARY KEY(tweet_id),
-	FOREIGN KEY(user_id) REFERENCES users(user_id)
+	FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 GRANT ALL on twitterdb.* TO twitter@localhost IDENTIFIED BY 'twitterpwd';
@@ -115,6 +115,7 @@ $ wget http://localhost:8080/var/api/get/tweet?action=list&id=1
 $ wget http://localhost:8080/var/api/get/tweet?action=listall
 $ wget http://localhost:8080/var/api/post/data?action=update
 $ wget http://localhost:8080/var/api/post/user?action=add&nick=altolabs
+$ wget http://localhost:8080/var/api/post/user?action=delete&id=1
 ```
 
 Notes
