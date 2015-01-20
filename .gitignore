@@ -15,6 +15,9 @@ local.properties
 .settings/
 .loadpath
 
+# Dropbox
+.dropbox
+
 # Secret files
 src/twitter4j.properties
 

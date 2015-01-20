@@ -68,18 +68,21 @@ app.controller('AppController', function($scope, Layout, LxDialogService, LxNoti
    $scope.deleteUser = function()
     {
         LxNotificationService.confirm('Delete user', 'Are you sure you want to delete this user?', { cancel:'Cancel', ok:'Delete' }, function(answer) {
-        	var url = (tweet_fetcher_api + 'post/user?action=delete&id=' + parseInt($scope.selectedUser.id));
-            $http.post(url).success(function(data) {
-            	var ret = parseInt(data.users);
-        		if(ret == 1) {
-        			LxNotificationService.info(data.message);
-        			Layout.closePanel();
-        		    fetchUsers();
-        		} else {
-        			LxNotificationService.info(data.message);
-        		}
-        		
-        	});
+        	if (answer == true) {
+	        	var url = (tweet_fetcher_api + 'post/user?action=delete&id=' + parseInt($scope.selectedUser.id));
+	            $http.post(url).success(function(data) {
+	            	var ret = parseInt(data.users);
+	        		if(ret == 1) {
+	        			LxNotificationService.info(data.message);
+	        			Layout.closePanel();
+	        		    fetchUsers();
+	        		} else {
+	        			LxNotificationService.info(data.message);
+	        			Layout.closePanel();
+	        		}
+	        		
+	        	});
+        	}
         });
     };
 
